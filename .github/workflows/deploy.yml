@@ -1,0 +1,38 @@
+name: Deployment Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Docker image
+        run: docker build -t myapp .
+
+      - name: Test
+        run: npm test  # Update with your test command
+        continue-on-error: true
+
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1
+        with:
+          publish-dir: './public' 
+          deploy-dir: './dist'    
+          deploy-message: 'Deployed using GitHub Actions'  
+          github-token: ${{ secrets.SCDAssignment2 }} 
+          enable-pull-request-comment: 'false'  

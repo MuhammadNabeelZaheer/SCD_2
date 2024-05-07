@@ -1,0 +1,34 @@
+name: Documentation Deployment
+
+on:
+  push:
+    paths:
+      - 'docs/**' # Trigger on changes to documentation files
+
+jobs:
+  deploy-documentation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # steps for building documentation
+      - name: Build documentation
+        run: |
+          # Navigate to the documentation directory
+          cd docs
+          
+          # Install Jekyll and dependencies
+          gem install bundler jekyll
+          bundle install
+          
+          # Build the documentation
+          bundle exec jekyll build
+
+      #  steps for deploying documentation to the hosting platform
+      - name: Deploy documentation
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/_site

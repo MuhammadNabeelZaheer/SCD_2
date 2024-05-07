@@ -1,0 +1,24 @@
+name: Custom Workflow Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  custom-workflow:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # steps for your custom workflow automation
+      - name: Execute Custom Workflow
+        run: |
+          echo "Running custom workflow..."
+          # Generate release notes
+          latest_tag=$(git describe --tags --abbrev=0)
+          commit_messages=$(git log --oneline ${latest_tag}..HEAD --pretty=format:"%h %s")
+          echo "Release Notes:"
+          echo "${commit_messages}"
