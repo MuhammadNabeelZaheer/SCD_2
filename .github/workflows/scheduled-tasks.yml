@@ -1,0 +1,22 @@
+name: Scheduled Tasks
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # Runs at midnight every day
+
+jobs:
+  run-scheduled-tasks:
+    name: Run Daily Maintenance
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Execute Maintenance Script
+        run: |
+          # Add commands/scripts to perform scheduled tasks
+          echo "Running daily maintenance tasks..."
+          # Example: Run a maintenance script
+          ./scripts/maintenance.sh
+
